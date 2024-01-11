@@ -11,8 +11,7 @@ def scrape_leetcode_problems():
 
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        # Find the relevant elements containing problem information
-        problems = soup.find_all('div', class_='reactable-data-row')
+     problems = soup.find_all('div', class_='reactable-data-row')
 
         data = []
 
@@ -21,7 +20,7 @@ def scrape_leetcode_problems():
             difficulty = problem.find('span', class_='difficulty').text.strip()
             tags = [tag.text.strip() for tag in problem.find_all('a', class_='reactable-data')]
 
-            # Get the problem statement
+          
             problem_url = f"https://leetcode.com{problem.find('a', class_='reactable-data').get('href')}"
             problem_statement = get_problem_statement(problem_url)
 
@@ -40,7 +39,6 @@ def get_problem_statement(url):
 
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        # Find the element containing the problem statement
         statement = soup.find('div', class_='content__u3I1 question-content__JfgR')
 
         return statement.text.strip() if statement else 'Problem statement not available'
@@ -61,10 +59,8 @@ def save_to_csv(data):
     except IOError as e:
         print(f"Error writing to CSV: {e}")
 
-        # Add print statements for debugging
-        print(response.text)  # Print the HTML content of the page
-        print(problems)  # Print the elements found during scraping
+       
+        print(response.text) 
+        print(problems)  
 
-
-# Call the function to initiate the scraping process
 scrape_leetcode_problems()
