@@ -10,7 +10,7 @@ def scrape_website(url):
         for item in soup.find_all('div', class_='mw-category'):
             data_points.append(item.text.strip())
         return data_points
-    else:
+    else: 
         print(f"Failed to retrieve the page. Status code: {response.status_code}")
         return None
 
