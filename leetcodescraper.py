@@ -11,7 +11,8 @@ def scrape_leetcode_problems():
 
         soup = BeautifulSoup(response.text, 'html.parser')
 
-     problems = soup.find_all('div', class_='reactable-data-row')
+        # Corrected indentation
+        problems = soup.find_all('div', class_='reactable-data-row')
 
         data = []
 
@@ -20,9 +21,14 @@ def scrape_leetcode_problems():
             difficulty = problem.find('span', class_='difficulty').text.strip()
             tags = [tag.text.strip() for tag in problem.find_all('a', class_='reactable-data')]
 
-          
-            problem_url = f"https://leetcode.com{problem.find('a', class_='reactable-data').get('href')}"
-            problem_statement = get_problem_statement(problem_url)
+            # Get the problem URL
+            problem_url_element = problem.find('a', class_='reactable-data')
+            problem_url = f"https://leetcode.com{problem_url_element.get('href')}" if problem_url_element else None
+
+            if problem_url:
+                problem_statement = get_problem_statement(problem_url)
+            else:
+                problem_statement = 'Problem statement not available'
 
             data.append({'Title': title, 'Difficulty': difficulty, 'Tags': tags, 'Problem Statement': problem_statement})
 
@@ -39,6 +45,7 @@ def get_problem_statement(url):
 
         soup = BeautifulSoup(response.text, 'html.parser')
 
+        # Verify the correct class for problem statement; this might need to be adjusted.
         statement = soup.find('div', class_='content__u3I1 question-content__JfgR')
 
         return statement.text.strip() if statement else 'Problem statement not available'
@@ -59,8 +66,5 @@ def save_to_csv(data):
     except IOError as e:
         print(f"Error writing to CSV: {e}")
 
-       
-        print(response.text) 
-        print(problems)  
-
+# Run the scraping function
 scrape_leetcode_problems()
